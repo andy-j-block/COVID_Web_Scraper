@@ -9,6 +9,7 @@
 # Preconditions first
 #
 # 0.1 - define OS specifics, check dir contents
+#
 # 0.2 - define current day/month/year
 #
 ##############
@@ -52,17 +53,26 @@ if missing:
 
 
 #############
-# 0.1 - define OS specifics, check dir contents
+# 0.1 - check if connected to VPN
 
+host = '19.0.0.1'
+    
+ping = subprocess.Popen(["ping.exe","-n","1","-w","1",host],stdout = subprocess.PIPE).communicate()[0]
+if ('unreachable' in str(ping)) or ('timed' in str(ping)) or ('failure' in str(ping)):
+    assert False, 'VPN may not be connected, please connect if necessary and run script again'
+
+
+#############
+# 0.2 - define OS specifics, check dir contents
 import os
 import os.path
-
-# assign current working directory to where this script exists
+    
+# assign current working directory to where this script exists, working around spyder file management
 root_path = os.getcwd()
 
 # define additional supplemental content to be used later
 git_pull_script= 'git_pull_script.sh'
-chromedriver = 'chromedriver_v84.exe'
+chromedriver = [filename for filename in os.listdir(root_path) if 'chromedriver_v' in filename][0]
 
 # check that necessary supplemental content is present in root folder
 assert os.path.exists(root_path +'/'+ git_pull_script), \
@@ -153,8 +163,9 @@ while not os.path.exists(downloads_path+'/daily.csv'):
     while not os.path.exists(downloads_path+'/daily.csv'):
         time.sleep(1)
         timer += 1
-        # restart process after 10 seconds because something timed out
-        if timer % 10 == 0:
+        # restart process after 5 seconds because something timed out
+        if timer % 5 == 0:
+            driver.execute_script("window.stop();")
             break
 
 # close chrome
@@ -292,17 +303,28 @@ master_df= pd.read_csv(master_file)
 # if last update column has a space instead of underscore, let's reformat
 if 'Last Update' in master_df.columns:
     master_df= master_df.rename(columns={'Last Update':'Last_Update'})
+elif 'Date' in master_df.columns:
+    master_df= master_df.rename(columns={'Date':'Last_Update'})
+    
+# get last entry and separate dateparts
+master_last_entry = master_df['Last_Update'].iloc[-1]   
 
-# get last entry and get rid of time value, leave only date parts
-master_last_day = master_df['Last_Update'].iloc[-1]
-master_last_day = master_last_day.split(' ')[0]
+if '-' in master_last_entry:
+    master_last_month = master_last_entry.split('-')[1]
+    master_last_day = master_last_entry.split('-')[2]
+    master_last_year = master_last_entry.split('-')[0]
+elif '/' in master_last_entry:
+    master_last_month = master_last_entry.split('/')[0]
+    master_last_day = master_last_entry.split('/')[1]
+    master_last_year = master_last_entry.split('/')[2]
 
-# reform last day pulled to csv naming convention
-# e.g. 2020-08-15 -> 08-15-2020
-master_last =  master_last_day.split('-')[1] + '-' + \
-               master_last_day.split('-')[2] + '-' + \
-               master_last_day.split('-')[0] + '.csv'                 
-                  
+# add leading zero to month and day parts if required
+if len(master_last_month) == 1:
+    master_last_month = '0'+master_last_month
+if len(master_last_day) == 1:
+    master_last_day = '0'+master_last_day
+
+master_last = master_last_month+'-'+master_last_day+'-'+master_last_year+'.csv'                           
 
 # get indices of master_last_csv and newest_file within all_daily_files
 master_last_idx = all_daily_files.index(master_last)
@@ -342,15 +364,15 @@ for x in new_csv_files:
 
     # replace files in git pull directory with edited files
     # nice to have, if hand editing needed later
-    new_file.to_csv(git_files_dir +'/'+ month +'-'+ day_num +'-'+ year +'.csv',\
-                    index=False, header=False)
+    # new_file.to_csv(git_files_dir +'/'+ month +'-'+ day_num +'-'+ year +'.csv',\
+    #                index=False, header=False)
   
       
 #########
 # 2.7 - remove old master file, save new master file, title in '_month_day.csv' format
 
 # remove existing master file to be replaced, unless there are no new csv files
-if not new_csv_files==[]:
+if not new_csv_files==[] and 'master.csv' in master_file:
     os.remove(master_file)
 
 # save master dataframe as a csv file, title formatted to date of last available data
@@ -361,5 +383,6 @@ masters_dir = root_path + '/Historical Master Files'
 
 if not os.path.isdir(masters_dir):
     os.mkdir(masters_dir)
-    
-master_df.to_csv(masters_dir + '/master_' + month+'_'+day_num + '.csv', index=False)
+
+if not new_csv_files==[]:    
+    master_df.to_csv(masters_dir + '/master_' + month+'_'+day_num + '.csv', index=False)
