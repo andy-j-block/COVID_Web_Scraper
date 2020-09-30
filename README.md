@@ -10,6 +10,6 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 ## Features
 * VPN Check
-** Ensures that the user is connected to the Ford VPN
+  * Ensures that the user is connected to the Ford VPN
 * Directory Check
-** Ensures the user has all the necessary helper files required to run the script and alerts the user through assert statements if a given file is missing from the base directory
+  * Ensures the user has all the necessary helper files required to run the script and alerts the user through assert statements if a given file is missing from the base directory
