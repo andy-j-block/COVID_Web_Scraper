@@ -1,13 +1,15 @@
 #############
 #
-# Place this file in the contents folder of your repo
-# Find script_path, dl_path, target_path variables and change them
+# COVID Web Scraping Tool
+#
+# Written by Andy Block
+# August 18, 2020
 #
 #############
 # Preconditions first
+#
 # 0.1 - define OS specifics, check dir contents
 # 0.2 - define current day/month/year
-#
 #
 ##############
 # COVID Tracking Project
@@ -18,7 +20,8 @@
 # 1.4 - move file from downloads to root dir
 #
 #############
-## Git
+# Git
+#
 # 2.0 - git pull process
 # 2.1 - get latest csv and date of current pull
 # 2.2 - establish master list file
@@ -30,6 +33,23 @@
 #
 ############
 
+###########
+# 0.0 - check that all necessary modules exist
+
+import sys
+import subprocess
+import pkg_resources
+
+required = {'selenium', 'pandas', 'datetime'}
+installed = {pkg.key for pkg in pkg_resources.working_set}
+missing = required - installed
+
+if missing:
+    python = sys.executable
+    install=subprocess.check_call([python, '-m', 'pip', 'install', *missing],\
+                          stdout=subprocess.DEVNULL)
+    install.wait()    
+
 
 #############
 # 0.1 - define OS specifics, check dir contents
@@ -37,28 +57,28 @@
 import os
 import os.path
 
-# assign current working directory
+# assign current working directory to where this script exists
 root_path = os.getcwd()
 
-# development definition, ignore
-if 'Spyder' in root_path:
-    root_path = root_path[:-7]
-    
-# make sure this script is in your root directory    
-assert os.path.exists(root_path+'/getCOVIDdata_Reid.py'), 'This script is not in root_path, \
-move this script to the top level folder where your data is stored'
-
-# define additional external content to be used later
+# define additional supplemental content to be used later
 git_pull_script= 'git_pull_script.sh'
 chromedriver = 'chromedriver_v84.exe'
 
-# check that necessary additional content is present in root folder
+# check that necessary supplemental content is present in root folder
 assert os.path.exists(root_path +'/'+ git_pull_script), \
     'git pull script not found in root directory'
  
 assert os.path.exists(root_path +'/'+ chromedriver), \
     'chrome driver not found in root directory or fix chromedriver variable in \
 source code'
+
+# change root path to top level directory where all new files will be stored
+while not 'COVID-19'== root_path[-8:]:
+    os.chdir('..')
+    root_path=os.getcwd()
+
+assert root_path[-8:]=='COVID-19', 'Current working directory not set to /COVID-19'
+
 
 ##############
 # 0.2 - define current day/month/year
@@ -96,7 +116,10 @@ except:
 
 #############
 # 1.2 - set up web driver, check for correct versioning
-driver = webdriver.Chrome(root_path+'/'+chromedriver)
+if os.path.exists(root_path+'/'+chromedriver):   
+    driver = webdriver.Chrome(root_path+'/'+chromedriver)
+else:
+    driver = webdriver.Chrome(root_path+'/Python/'+chromedriver)
 
 driver_version=chromedriver.split('.exe')[0][-2:]
 chrome_version=driver.capabilities['browserVersion'][:2]
@@ -111,39 +134,55 @@ executable file name. E.g. "chromedriver_v85.exe" for verion 85'
 ############
 # 1.3 - find the correct link and download daily file
 
-# navigate to website
-covid_tracking_proj= 'https://covidtracking.com/data/api'
-driver.get(covid_tracking_proj)
+timer=0
 
-# click 'historical data for all states' dropdown
-dropdown_xpath= '//button[@aria-controls="panel--6"]'
-driver.find_element_by_xpath(dropdown_xpath).click()
-
-# click link to csv file to download
-link_text= 'https://api.covidtracking.com/v1/states/daily.csv'
-driver.find_element_by_link_text(link_text).click()
-
-# wait until file is downloaded
 while not os.path.exists(downloads_path+'/daily.csv'):
-    time.sleep(1)
+    
+    # navigate to website
+    covid_tracking_proj= 'https://covidtracking.com/data/api'
+    driver.get(covid_tracking_proj)
+    
+    # click 'historical data for all states' dropdown
+    dropdown_xpath= '//button[@aria-controls="panel--6"]'
+    driver.find_element_by_xpath(dropdown_xpath).click()
+    
+    # click link to csv file to download
+    link_text= 'https://api.covidtracking.com/v1/states/daily.csv'
+    driver.find_element_by_link_text(link_text).click()
+    
+    while not os.path.exists(downloads_path+'/daily.csv'):
+        time.sleep(1)
+        timer += 1
+        # restart process after 10 seconds because something timed out
+        if timer % 10 == 0:
+            break
 
 # close chrome
 driver.quit()
 
 #############
-# 1.3 - move file from downloads to root dir
+# 1.4 - move file from downloads to root dir
 
-# change name of newly downloaded file and move to COVID directory
-daily_filename = '/daily.csv'
-new_daily_filename = '/daily_'+current_month+'-'+current_day+'.csv'
+# define downloaded daily file and make copy with dateparts added to name
+daily_file = '/daily.csv'
+daily_file_w_date = '/daily_'+current_month+'-'+current_day+'.csv'
+shutil.copyfile(downloads_path+daily_file, downloads_path+daily_file_w_date)
 
-os.rename(downloads_path+daily_filename, downloads_path+new_daily_filename)
+# move daily_file to root path as 'daily.csv'
+shutil.move(downloads_path+daily_file, root_path+daily_file)
+# check to make sure daily_file made it to root_path 
+assert os.path.exists(root_path+daily_file),\
+    'Daily file did not move to root directory properly, please move manually'
     
-shutil.move(downloads_path+new_daily_filename, root_path+new_daily_filename)
-    
-assert os.path.exists(root_path+new_daily_filename),\
-    'Daily file did not move to root directory properly'
-    
+# create daily file directory if one does not exist
+dailys_dir = root_path+'/Historical Daily Files'
+
+if not os.path.isdir(dailys_dir):
+    os.mkdir(dailys_dir)
+
+# move daily_file_w_date to '/Daily Files' directory    
+shutil.move(downloads_path+daily_file_w_date, dailys_dir+daily_file_w_date)
+
     
 ###############
 #    
@@ -163,14 +202,9 @@ assert os.path.exists(root_path+new_daily_filename),\
 #
 # 2.0 - git pull process
 
-import subprocess
-
-assert os.path.isdir(root_path+'/COVID-19'), 'Change cwd in git_pull variable to \
-    the location of your Johns Hopkins git root'
-
 git_pull = subprocess.Popen(['C:/Program Files/Git/git-bash.exe', \
-                            root_path+'/'+git_pull_script], \
-                            cwd= root_path+'/COVID-19')
+                            root_path+'/Python/'+git_pull_script], \
+                            cwd= root_path)
 
 # wait until git pull is completed    
 git_pull.wait()
@@ -255,7 +289,11 @@ import pandas as pd
 # read master list in as dataframe
 master_df= pd.read_csv(master_file)
 
-# get last entry and split to date parts
+# if last update column has a space instead of underscore, let's reformat
+if 'Last Update' in master_df.columns:
+    master_df= master_df.rename(columns={'Last Update':'Last_Update'})
+
+# get last entry and get rid of time value, leave only date parts
 master_last_day = master_df['Last_Update'].iloc[-1]
 master_last_day = master_last_day.split(' ')[0]
 
@@ -316,4 +354,12 @@ if not new_csv_files==[]:
     os.remove(master_file)
 
 # save master dataframe as a csv file, title formatted to date of last available data
-master_df.to_csv(root_path + '/master_' + month+'_'+day_num + '.csv', index=False)
+master_df.to_csv(root_path + '/master.csv', index=False)
+
+# save master dataframe as a daily copy
+masters_dir = root_path + '/Historical Master Files'
+
+if not os.path.isdir(masters_dir):
+    os.mkdir(masters_dir)
+    
+master_df.to_csv(masters_dir + '/master_' + month+'_'+day_num + '.csv', index=False)
