@@ -34,34 +34,6 @@
 #
 ############
 
-###########
-# 0.0 - check that all necessary modules exist
-
-import sys
-import subprocess
-import pkg_resources
-
-required = {'selenium', 'pandas', 'datetime'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    python = sys.executable
-    install=subprocess.check_call([python, '-m', 'pip', 'install', *missing],\
-                          stdout=subprocess.DEVNULL)
-    install.wait()    
-
-
-#############
-# 0.1 - check if connected to VPN
-
-host = '19.0.0.1'
-    
-ping = subprocess.Popen(["ping.exe","-n","1","-w","1",host],stdout = subprocess.PIPE).communicate()[0]
-if ('unreachable' in str(ping)) or ('timed' in str(ping)) or ('failure' in str(ping)):
-    assert False, 'VPN may not be connected, please connect if necessary and run script again'
-
-
 #############
 # 0.2 - define OS specifics, check dir contents
 import os
