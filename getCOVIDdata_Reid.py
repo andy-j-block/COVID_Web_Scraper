@@ -34,6 +34,18 @@
 #
 ############
 
+
+#############
+# all imports at top
+
+import pandas as pd
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import filedialog
+import subprocess
+
+
+
 #############
 # 0.2 - define OS specifics, check dir contents
 import os
@@ -98,17 +110,15 @@ except:
 
 #############
 # 1.2 - set up web driver, check for correct versioning
-if os.path.exists(root_path+'/'+chromedriver):   
-    driver = webdriver.Chrome(root_path+'/'+chromedriver)
-else:
-    driver = webdriver.Chrome(root_path+'/Python/'+chromedriver)
+driver = webdriver.Chrome(root_path+'/'+chromedriver)
 
 driver_version=chromedriver.split('.exe')[0][-2:]
 chrome_version=driver.capabilities['browserVersion'][:2]
 
-assert driver_version==chrome_version, 'ChromeDriver version mismatch with \
-installed version of Chrome. Go here to download correct version: \
-https://chromedriver.chromium.org/downloads'
+if driver_version!=chrome_version:
+    messagebox.showinfo('ChromeDriver version mismatch with \
+                        installed version of Chrome. Go here to download correct version: \
+                        https://chromedriver.chromium.org/downloads')
 
 assert '_v' in chromedriver, 'Append version number to the end of Chrome Driver \
 executable file name. E.g. "chromedriver_v85.exe" for verion 85'
