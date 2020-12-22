@@ -11,6 +11,6 @@ def get_dirs():
     
     CTP_data_dir = root_dir + '/CTP_data'
     
-    JH_data_dir = root_dir + '/JH_data'
+    JH_data_dir = root_dir + '/JH_data/csse_covid_19_data/csse_covid_19_daily_reports'
     
     return root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir

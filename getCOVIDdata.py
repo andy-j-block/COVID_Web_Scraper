@@ -47,6 +47,8 @@ from helper_files.get_todays_date import get_todays_date
 from helper_files.create_webdriver import create_webdriver
 from helper_files.get_CTP_data import get_CTP_data
 from helper_files.get_JH_data import get_JH_data
+from helper_files.create_JH_master import create_JH_master
+from helper_files.update_JH_master import update_JH_master
 import os
 import os.path
 
@@ -62,7 +64,7 @@ current_day, current_month, current_year = get_todays_date()
 
 driver = create_webdriver(helper_files_dir, downloads_dir)
 
-#get_CTP_data(driver, downloads_dir)
+get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
 
     
 ###############
@@ -246,6 +248,37 @@ if not new_csv_files==[]:
     master_df.to_csv(masters_dir + '/master_' + month+'_'+day_num + '.csv', index=False)
 
 
+
+
+
+
 #if __name__== '__main__':
     
-    # root_dir, helper_files_dir, downloads_dir = get_dirs()
+    #root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir = get_dirs()
+    
+    #current_day, current_month, current_year = get_todays_date()
+    
+    
+    ###########
+    
+    #driver = create_webdriver(helper_files_dir, downloads_dir)
+    
+    #get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
+    
+    ###########
+    
+    #get_JH_data(helper_files_dir, JH_data_dir)
+    
+    ###########
+    
+    #root_files = os.listdir(root_dir)
+    #existing_JH_master = [x fox x in root_files if 'JH_master' in x]
+    
+    #if len(existing_JH_master) < 1:
+        #JH_master = create_JH_master(JH_data_dir)
+    #else:
+        #pass
+    
+    #update_JH_master()
+    
+    ###########

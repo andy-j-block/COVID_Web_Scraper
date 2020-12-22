@@ -4,7 +4,7 @@ import time
 import shutil
 
 
-def get_CTP_data(driver, downloads_dir, CTP_data_dir, current_month, current_day):
+def get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, current_day):
     
     
     #################
@@ -62,25 +62,39 @@ def get_CTP_data(driver, downloads_dir, CTP_data_dir, current_month, current_day
     #################
     #
     # This function first changes the downloaded 'daily.csv' file to a dated
-    # filename, i.e. 'daily_12-20.csv' for a daily file downloaded on Dec 20.
-    # It then moves this dated file from the downloads directory to the 
-    # CTP data directory.
+    # filename, i.e. 'CTP_daily_12-20.csv' for a daily file downloaded on Dec 20.
+    # It then moves the previous daily file from the root directory to the 
+    # CTP_data directory. Finally, it moves the new, dated file from the 
+    # downloads directory to the root directory.
     #
     
-    def format_daily(downloads_dir, CTP_data_dir, current_month, current_day):
+    def format_daily(root_dir, downloads_dir, CTP_data_dir, current_month, current_day):
+        
+        # rename newly-downloaded daily file
         
         default_filename = '/daily.csv'
-        dated_filename = '/daily_' + current_month + '-' + current_day + '.csv'
+        dated_filename = '/CTP_daily_' + current_month + '-' + current_day + '.csv'
         
         os.rename(downloads_dir + default_filename, downloads_dir + dated_filename)
         
-        original_dir = downloads_dir + dated_filename
-        target_dir = CTP_data_dir + dated_filename
         
-        shutil.move(original_dir, target_dir)
+        # move existing daily file to CTP_data dir
         
+        root_dir_files = os.listdir(root_dir)
+        existing_daily = [x for x in root_dir_files if 'CTP_daily' in x][0]
+                      
+        shutil.move(root_dir +'/'+ existing_daily, CTP_data_dir +'/'+ existing_daily)
+        
+        
+        # move new file from downloads to root
+        
+        original_file_loc = downloads_dir + dated_filename
+        target_file_loc = root_dir + dated_filename
+        
+        shutil.move(original_file_loc, target_file_loc)
+
         
     #################
     
-    format_daily(downloads_dir, CTP_data_dir, current_month, current_day)
+    format_daily(root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
     
