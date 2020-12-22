@@ -44,35 +44,14 @@ from tkinter import messagebox
 from tkinter import filedialog
 import subprocess
 from helper_files.create_webdriver import create_webdriver
+from helper_files.get_dirs import get_dirs
 import os
-
+import os.path
 
 
 #############
-# 0.2 - define OS specifics, check dir contents
 
-import os.path
-
-root_dir = os.getcwd()
-helper_files_dir = root_dir + '/helper_files'
-    
-# assign current working directory to where this script exists, working around spyder file management
-root_path = os.getcwd()
-
-# define additional supplemental content to be used later
-git_pull_script= 'git_pull_script.sh'
-
-# check that necessary supplemental content is present in root folder
-assert os.path.exists(root_path +'/'+ git_pull_script), \
-    'git pull script not found in root directory'
-
-# change root path to top level directory where all new files will be stored
-while not 'COVID-19'== root_path[-8:]:
-    os.chdir('..')
-    root_path=os.getcwd()
-
-assert root_path[-8:]=='COVID-19', 'Current working directory not set to /COVID-19'
-
+root_dir, helper_files_dir, downloads_dir = get_dirs()
 
 ##############
 # 0.2 - define current day/month/year
@@ -111,6 +90,8 @@ except:
 # 1.3 - find the correct link and download daily file
 
 driver = create_webdriver(helper_files_dir)
+
+#get_CTP_data(driver)
 
 timer=0
 
@@ -219,9 +200,6 @@ for x in root_contents:
 if master_file=='':
     
     # first run, request master file
-    import tkinter as tk
-    from tkinter import messagebox
-    from tkinter import filedialog
     
     master_select = tk.Tk()
     master_select.withdraw()
@@ -354,3 +332,8 @@ if not os.path.isdir(masters_dir):
 
 if not new_csv_files==[]:    
     master_df.to_csv(masters_dir + '/master_' + month+'_'+day_num + '.csv', index=False)
+
+
+#if __name__== '__main__':
+    
+    # root_dir, helper_files_dir, downloads_dir = get_dirs()
