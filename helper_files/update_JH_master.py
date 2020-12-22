@@ -1,41 +1,43 @@
-##################
-   
-# 2.1 - get latest csv and date of current pull
-    
-# root -> down to where our daily csv's are pulled
-daily_files_dir = JH_data_dir + '/csse_covid_19_data/csse_covid_19_daily_reports'
 
-    
-##########
-# 2.2 - establish master list file
+import pandas as pd
 
-# get root directory contents
-root_contents = os.listdir(root_path)
 
-# check to see if master list exists already
-master_file = ''
-for x in root_contents:
-    if 'master' in x:
-        master_file = root_path+'/'+x
-    else:
-        continue
-
-# if no files in root dir contain the word master, open selection to find one
-if master_file=='':
+def update_JH_master(JH_master):
     
-    # first run, request master file
+    ####################
     
-    master_select = tk.Tk()
-    master_select.withdraw()
-    
-    messagebox.showinfo("Master File Not Found in Root Dir", \
-                        "You will now be prompted to select existing master list")
-    
-    original_master_path = filedialog.askopenfilename(initialdir=root_path, \
-                                                      title = "Select existing master file")
+    def reformat_datetime(JH_master):
         
-    master_file = original_master_path
+        JH_master['Last_Update'] = pd.to_datetime(JH_master['Last_Update'], format='%Y-%m-%d %H:%M:&S')
+        JH_master['Last_Update'] = JH_master['Last_Update'].dt.date
 
+        JH_master = JH_master.sort_values('Last_Update', ascending = True)
+        
+        return JH_master
+    
+    #####################
+
+    
+    JH_master = reformat_datetime(JH_master)
+
+
+    #####################
+    
+    def get_date_last_pull(JH_master):
+        
+        last_pull = JH_master['Last_Update'].iloc[-1]
+        last_pull = last_pull - pd.Timedelta('1 day')
+        
+        return last_pull
+    
+    #####################
+    
+    
+    last_pull = get_date_last_pull(JH_master)
+    
+    
+    #####################
+    
 
 ##########
 # 2.3 - find out when last pull took place from last entry in master
@@ -65,16 +67,6 @@ if not os.path.exists(git_files_dir+'/'+newest_file):
 #########
 # 2.4 - determine list of csv's needed to be appended onto master
 
-import pandas as pd
-
-# read master list in as dataframe
-master_df= pd.read_csv(master_file)
-
-# if last update column has a space instead of underscore, let's reformat
-if 'Last Update' in master_df.columns:
-    master_df= master_df.rename(columns={'Last Update':'Last_Update'})
-elif 'Date' in master_df.columns:
-    master_df= master_df.rename(columns={'Date':'Last_Update'})
     
 # get last entry and separate dateparts
 master_last_entry = master_df['Last_Update'].iloc[-1]   

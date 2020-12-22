@@ -274,10 +274,10 @@ if not new_csv_files==[]:
     #root_files = os.listdir(root_dir)
     #existing_JH_master = [x fox x in root_files if 'JH_master' in x]
     
-    #if len(existing_JH_master) < 1:
+    #if len(existing_JH_master) != 1:
         #JH_master = create_JH_master(JH_data_dir)
     #else:
-        #pass
+        #JH_master = pd.read_csv(existing_JH_master[0])
     
     #update_JH_master()
     

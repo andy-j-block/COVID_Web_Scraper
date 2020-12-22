@@ -1,4 +1,9 @@
 
+####### TODO
+#
+# write function description
+
+
 import pandas as pd
 import os
 
@@ -7,6 +12,7 @@ def create_JH_master(JH_data_dir):
     
     JH_files = os.listdir(JH_data_dir)[1:-1]
     JH_files = [JH_data_dir + '/' + x for x in JH_files]
+    JH_files.reverse()
     
     JH_master = pd.DataFrame(JH_files[0])
     

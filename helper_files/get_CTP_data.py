@@ -78,13 +78,13 @@ def get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, c
         os.rename(downloads_dir + default_filename, downloads_dir + dated_filename)
         
         
-        # move existing daily file to CTP_data dir
+        # move existing daily file to CTP_data dir (if it exists)
         
         root_dir_files = os.listdir(root_dir)
-        existing_daily = [x for x in root_dir_files if 'CTP_daily' in x][0]
-                      
-        shutil.move(root_dir +'/'+ existing_daily, CTP_data_dir +'/'+ existing_daily)
+        existing_daily = [x for x in root_dir_files if 'CTP_daily' in x]
         
+        if len(existing_daily) == 1:      
+            shutil.move(root_dir +'/'+ existing_daily[0], CTP_data_dir +'/'+ existing_daily[0])
         
         # move new file from downloads to root
         
