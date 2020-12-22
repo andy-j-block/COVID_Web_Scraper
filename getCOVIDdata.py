@@ -66,7 +66,7 @@ current_year= current_date.split('-')[0]
 
 ###########
 
-driver = create_webdriver(helper_files_dir)
+driver = create_webdriver(helper_files_dir, downloads_dir)
 
 #get_CTP_data(driver, downloads_dir)
 

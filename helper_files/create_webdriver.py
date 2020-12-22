@@ -12,12 +12,11 @@
 import os
 import tkinter as tk
 from tkinter import messagebox
-from tkinter import filedialog
 from selenium import webdriver
 from win32api import GetFileVersionInfo, HIWORD
 from zipfile import ZipFile
 
-def create_webdriver(helper_files_dir):
+def create_webdriver(helper_files_dir, downloads_dir):
     
     ##############
     
@@ -51,7 +50,7 @@ def create_webdriver(helper_files_dir):
     #   delete existing chromedriver, extract new chromedriver from zip, 
     #   copy new chromedriver to helper files dir, create driver
     
-    def test_chromedriver(helper_files_dir):
+    def test_chromedriver(helper_files_dir, downloads_dir):
         
         try:
             driver = webdriver.Chrome(helper_files_dir+'/chromedriver.exe')
@@ -60,13 +59,12 @@ def create_webdriver(helper_files_dir):
         except:
         
             tk.Tk().withdraw()
-            error_message = 'Your installed Chrome version is v' +chrome_ver+'''. Go here to download the corresponding ChromeDriver version: https://chromedriver.chromium.org/downloads 
-            Click OK once downloaded and then select downloaded zip file.'''
-            error_box = messagebox.showerror('Chrome/ChromeDriver version mismatch',
+            error_message = 'Your installed Chrome version is v' +chrome_ver+'. Go here to download the corresponding ChromeDriver version: https://chromedriver.chromium.org/downloads'
+            messagebox.showerror('Chrome/ChromeDriver version mismatch',
                                  error_message)
             
-            if error_box=='ok':
-                chromedriver_zip = filedialog.askopenfilename()
+            downloads_files = os.listdir(downloads_dir)
+            chromedriver_zip = [x for x in downloads_files if 'chromedriver' in x][0]
             
             with ZipFile(chromedriver_zip, 'r') as zip_file:
                 os.remove(helper_files_dir+'chromedriver.exe')
@@ -78,5 +76,5 @@ def create_webdriver(helper_files_dir):
     ################
     
     
-    driver = test_chromedriver(helper_files_dir)
+    driver = test_chromedriver(helper_files_dir, downloads_dir)
     return driver
