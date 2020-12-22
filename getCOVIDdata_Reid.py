@@ -45,6 +45,7 @@ from tkinter import filedialog
 import subprocess
 from helper_files.create_webdriver import create_webdriver
 from helper_files.get_dirs import get_dirs
+from helper_files.get_CTP_data import get_CTP_data
 import os
 import os.path
 
