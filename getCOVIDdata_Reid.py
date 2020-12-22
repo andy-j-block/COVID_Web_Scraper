@@ -43,28 +43,28 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 import subprocess
+from helper_files.create_webdriver import create_webdriver
+import os
 
 
 
 #############
 # 0.2 - define OS specifics, check dir contents
-import os
+
 import os.path
+
+root_dir = os.getcwd()
+helper_files_dir = root_dir + '/helper_files'
     
 # assign current working directory to where this script exists, working around spyder file management
 root_path = os.getcwd()
 
 # define additional supplemental content to be used later
 git_pull_script= 'git_pull_script.sh'
-chromedriver = [filename for filename in os.listdir(root_path) if 'chromedriver_v' in filename][0]
 
 # check that necessary supplemental content is present in root folder
 assert os.path.exists(root_path +'/'+ git_pull_script), \
     'git pull script not found in root directory'
- 
-assert os.path.exists(root_path +'/'+ chromedriver), \
-    'chrome driver not found in root directory or fix chromedriver variable in \
-source code'
 
 # change root path to top level directory where all new files will be stored
 while not 'COVID-19'== root_path[-8:]:
@@ -92,7 +92,6 @@ current_year= current_date.split('-')[0]
 #
 # 1.1 - define downloads path and remove any existing daily files
 
-from selenium import webdriver
 import time
 import shutil
 
@@ -108,23 +107,10 @@ try:
 except:
     pass
 
-#############
-# 1.2 - set up web driver, check for correct versioning
-driver = webdriver.Chrome(root_path+'/'+chromedriver)
-
-driver_version=chromedriver.split('.exe')[0][-2:]
-chrome_version=driver.capabilities['browserVersion'][:2]
-
-if driver_version!=chrome_version:
-    messagebox.showinfo('ChromeDriver version mismatch with \
-                        installed version of Chrome. Go here to download correct version: \
-                        https://chromedriver.chromium.org/downloads')
-
-assert '_v' in chromedriver, 'Append version number to the end of Chrome Driver \
-executable file name. E.g. "chromedriver_v85.exe" for verion 85'
-
 ############
 # 1.3 - find the correct link and download daily file
+
+driver = create_webdriver(helper_files_dir)
 
 timer=0
 
