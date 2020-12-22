@@ -9,4 +9,8 @@ def get_dirs():
     downloads_dir = os.getcwd().split('\\')[:3]
     downloads_dir = '/'.join(downloads_dir) + '/Downloads'
     
-    return root_dir, helper_files_dir, downloads_dir
+    CTP_data_dir = root_dir + '/CTP_data'
+    
+    JH_data_dir = root_dir + '/JH_data'
+    
+    return root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir
