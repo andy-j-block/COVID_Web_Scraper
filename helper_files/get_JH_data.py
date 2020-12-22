@@ -26,9 +26,4 @@ def get_JH_data(root_dir, helper_files_dir, JH_data_dir):
     # 2.1 - get latest csv and date of current pull
         
     # root -> down to where our daily csv's are pulled
-    down_two = '/csse_covid_19_data/csse_covid_19_daily_reports'
-    
-    if os.path.isdir(root_path+'/COVID-19'):
-        down_two='/COVID-19'+down_two
-    
-    git_files_dir = root_path + down_two
+    daily_files_dir = JH_data_dir + '/csse_covid_19_data/csse_covid_19_daily_reports'

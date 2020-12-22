@@ -43,6 +43,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 from helper_files.get_dirs import get_dirs
+from helper_files.get_todays_date import get_todays_date
 from helper_files.create_webdriver import create_webdriver
 from helper_files.get_CTP_data import get_CTP_data
 from helper_files.get_JH_data import get_JH_data
@@ -54,14 +55,7 @@ import os.path
 
 root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir = get_dirs()
 
-##############
-# 0.2 - define current day/month/year
-from datetime import date    
-
-current_date = str(date.today())
-current_day = current_date.split('-')[2]
-current_month= current_date.split('-')[1]
-current_year= current_date.split('-')[0]
+current_day, current_month, current_year = get_todays_date()
 
 
 ###########
