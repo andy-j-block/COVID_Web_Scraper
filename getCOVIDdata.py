@@ -52,7 +52,7 @@ import os.path
 
 #############
 
-root_dir, helper_files_dir, downloads_dir = get_dirs()
+root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir = get_dirs()
 
 ##############
 # 0.2 - define current day/month/year
@@ -86,15 +86,6 @@ driver = create_webdriver(helper_files_dir, downloads_dir)
 # 2.7 - save new master file, title in '_month_day.csv' format
 #
 #############
-#
-# 2.0 - git pull process
-
-git_pull = subprocess.Popen(['C:/Program Files/Git/git-bash.exe', \
-                            root_path+'/Python/'+git_pull_script], \
-                            cwd= root_path)
-
-# wait until git pull is completed    
-git_pull.wait()
 
 
 #############
