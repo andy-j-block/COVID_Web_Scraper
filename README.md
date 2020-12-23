@@ -18,14 +18,20 @@ This tool was built while at Ford Motor Company for my section's technical speci
 ## Helper File Explanations
 
 1. [get_dirs](#get_dirs)
-2. [create_webdriver](#create_webdriver)
-3. [get_CTP_date](#get_CTP_data)
+2. [get_todays_date](#get_todays_date)
+3. [create_webdriver](#create_webdriver)
+4. [get_CTP_data](#get_CTP_data)
+5. [get_JH_data](#get_JH_data)
+6. [create_JH_master](#create_JH_master)
+7. [update_JH_master](#update_JH_master)
 
 ### get_dirs
 This function simply returns the following three directories for use by the other functions in this webscraper:
 * root_dir - the root directory on the host machine
 * helper_files_dir - the sub-directory containing all the helper files and modules
 * downloads_dir - the downloads folder of the host machine
+
+### get_todays_date
     
 ### create_webdriver
 This function does two main jobs:
@@ -34,3 +40,14 @@ This function does two main jobs:
 
 ### get_CTP_data
 This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving it to where it needs to be, etc.
+
+### get_JH_data
+
+### create_JH_master
+
+### update_JH_master
+
+
+
+
+
