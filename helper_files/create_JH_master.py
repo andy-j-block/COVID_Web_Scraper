@@ -20,6 +20,6 @@ def create_JH_master(JH_data_dir):
         
         file_df = pd.DataFrame(file)
     
-        JH_master = JH_master.concat(file_df, ignore_index=True)
+        JH_master = pd.concat([JH_master, file_df], ignore_index=True)
         
     return JH_master
