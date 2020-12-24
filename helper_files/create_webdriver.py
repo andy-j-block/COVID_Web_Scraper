@@ -16,23 +16,15 @@ from selenium import webdriver
 from win32api import GetFileVersionInfo, HIWORD
 from zipfile import ZipFile
 
-def create_webdriver(helper_files_dir, downloads_dir):
+def create_webdriver(chrome_exe, helper_files_dir, downloads_dir):
     
     ##############
     
     # determine chrome version number on host machine, only works for windows
     
-    def get_chrome_version():
-    
-        default_locs = ['C:\Program Files (x86)\Google\Chrome\Application\chrome.exe',
-                        'C:\Program Files\Google\Chrome\Application\chrome.exe']
+    def get_chrome_version(chrome_exe):
         
-        if os.path.exists(default_locs[0]):
-            chrome_loc = default_locs[0]
-        else:
-            chrome_loc = default_locs[1]
-        
-        info = GetFileVersionInfo(chrome_loc,'\\')
+        info = GetFileVersionInfo(chrome_exe, '\\')
         chrome_ver = str(HIWORD(info['FileVersionMS']))
         return chrome_ver
     

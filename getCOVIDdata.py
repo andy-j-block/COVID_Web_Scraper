@@ -41,6 +41,7 @@
 import os
 import pandas as pd
 from helper_files.get_dirs import get_dirs
+from helper_files.get_executables import get_executables
 from helper_files.get_todays_date import get_todays_date
 from helper_files.create_webdriver import create_webdriver
 from helper_files.get_CTP_data import get_CTP_data
@@ -54,18 +55,20 @@ if __name__== '__main__':
     
     root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir = get_dirs()
     
+    chrome_exe, git_bash_exe = get_executables()
+    
     current_day, current_month = get_todays_date()
     
     
     ##########
     
-    driver = create_webdriver(helper_files_dir, downloads_dir)
+    driver = create_webdriver(chrome_exe, helper_files_dir, downloads_dir)
     
     get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
     
     ##########
     
-    get_JH_data(helper_files_dir, JH_data_dir)
+    get_JH_data(git_bash_exe, helper_files_dir, JH_data_dir)
     
     ##########
     

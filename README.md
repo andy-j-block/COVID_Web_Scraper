@@ -2,7 +2,7 @@
 
 ### Contents
 1. [Project Intent](#intent)
-2. [Data Sources](#data_source)
+2. [Data Sources](#data_sources)
 3. [Features](#features)
 4. [Helper Function Explanations](#helper_fcns)
 
@@ -40,13 +40,21 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 ### *get_dirs*
 This function simply returns the following five directories for use by the other functions in this webscraper:
-* root_dir - the root directory on the host machine
-* helper_files_dir - the sub-directory containing all the helper files and modules
-* downloads_dir - the downloads folder of the host machine
-* CTP_data_dir - 
-* JH_data_dir - 
+
+* *root_dir* - the root directory on the host machine
+* *helper_files_dir* - the sub-directory containing all the helper files and modules
+* *downloads_dir* - the downloads folder of the host machine
+* *CTP_data_dir* - the directory where historical daily CTP reports are stored
+* *JH_data_dir* - the directory where the JH github repo is stored
+
+### *get_executables*
+
+
+* *chrome_exe*
+* *git_bash_exe*
 
 ### *get_todays_date*
+This function simply returns the day and month at the time of running the program.  They are stored as the following variables:
 
 * current_day
 * current_month
@@ -60,8 +68,10 @@ This function does two main jobs:
 This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving it to where it needs to be, etc.
 
 ### *get_JH_data*
+This function performs a git pull on the JH repo stored in the JH_data folder.  It uses the subprocess module to open a git bash using the default location of the executable on Windows.  If using another OS, please change the git_exe variable.
 
 ### *create_JH_master*
+This function creates a new JH_master CSV file if one does not already exist in the main root folder.  This will take all of the 
 
 ### *update_JH_master*
 
