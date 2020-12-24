@@ -23,7 +23,7 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 ## Helper Function Explanations  <a name="helper_fcns"></a>
 
-<details><summary>*Functions*</summary>
+<details><summary><strong>Functions</strong></summary>
 <p>
 
 - *[get_dirs](#get_dirs)*
