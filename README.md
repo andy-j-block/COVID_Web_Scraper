@@ -23,7 +23,7 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 ## Helper Function Explanations  <a name="helper_fcns"></a>
 
-<details><summary>Functions</summary>
+<details><summary>*Functions*</summary>
 <p>
 
 - *[get_dirs](#get_dirs)*
@@ -38,7 +38,7 @@ This tool was built while at Ford Motor Company for my section's technical speci
 </details>
 
 
-### get_dirs
+### *get_dirs*
 This function simply returns the following five directories for use by the other functions in this webscraper:
 * root_dir - the root directory on the host machine
 * helper_files_dir - the sub-directory containing all the helper files and modules
@@ -46,24 +46,24 @@ This function simply returns the following five directories for use by the other
 * CTP_data_dir - 
 * JH_data_dir - 
 
-### get_todays_date
+### *get_todays_date*
 
 * current_day
 * current_month
   
-### create_webdriver
+### *create_webdriver*
 This function does two main jobs:
 * Acquiring the version of Chrome currently installed on the host machine
 * Creating an instance of the Chromedriver for use in get_CTP_data function
 
-### get_CTP_data
+### *get_CTP_data*
 This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving it to where it needs to be, etc.
 
-### get_JH_data
+### *get_JH_data*
 
-### create_JH_master
+### *create_JH_master*
 
-### update_JH_master
+### *update_JH_master*
 
 
 
