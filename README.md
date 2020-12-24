@@ -1,4 +1,5 @@
 # COVID Web Scraper
+<div align="justify">   
 
 ### Contents
 1. [Project Intent](#intent)
@@ -100,3 +101,4 @@ the main root folder.  This will take all of the
 
 
 
+</div> 
