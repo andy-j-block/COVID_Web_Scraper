@@ -1,4 +1,7 @@
 import os
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import filedialog
 
 def get_dirs():
     
@@ -8,6 +11,13 @@ def get_dirs():
     
     downloads_dir = os.getcwd().split('\\')[:3]
     downloads_dir = '/'.join(downloads_dir) + '/Downloads'
+    
+    if not os.path.exists(downloads_dir):
+        tk.Tk().withdraw()
+        error_message = 'Downloads folder not found in the default Windows location. Please identify the location of your Downloads folder in the following file dialog.'
+        messagebox.showerror('Downloads folder not found',
+                             error_message)
+        downloads_dir = filedialog.askopenfilename()
     
     CTP_data_dir = root_dir + '/CTP_data'
     
