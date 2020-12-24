@@ -54,7 +54,7 @@ if __name__== '__main__':
     
     root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir = get_dirs()
     
-    current_day, current_month, current_year = get_todays_date()
+    current_day, current_month = get_todays_date()
     
     
     ##########

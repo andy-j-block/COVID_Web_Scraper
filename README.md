@@ -1,4 +1,11 @@
 # COVID Web Scraper
+
+### Contents
+1. [Project Intent](#Project Intent)
+2. [Data Sources](#Data Sources)
+3. [Features](#Features)
+4. [Helper Function Explanations](#Helper Function Explanations)
+
 ## Project Intent
 This web scraping tool collects COVID data from two sources (John Hopkins Github and the COVID Tracking Project), reformats the datetime information, determines what data is new, and appends it into the master dataset.
 
@@ -14,8 +21,10 @@ This tool was built while at Ford Motor Company for my section's technical speci
 * Directory Check
   * Ensures the user has all the necessary helper files required to run the script and alerts the user through assert statements if a given file is missing from the base directory
 
+## Helper Function Explanations
 
-## Helper File Explanations
+<details><summary>Functions</summary>
+<p>
 
 1. [get_dirs](#get_dirs)
 2. [get_todays_date](#get_todays_date)
@@ -25,14 +34,24 @@ This tool was built while at Ford Motor Company for my section's technical speci
 6. [create_JH_master](#create_JH_master)
 7. [update_JH_master](#update_JH_master)
 
+</p>
+</details>
+
+
 ### get_dirs
-This function simply returns the following three directories for use by the other functions in this webscraper:
+This function simply returns the following five directories for use by the other functions in this webscraper:
 * root_dir - the root directory on the host machine
 * helper_files_dir - the sub-directory containing all the helper files and modules
 * downloads_dir - the downloads folder of the host machine
+* CTP_data_dir - 
+* JH_data_dir - 
 
 ### get_todays_date
-    
+
+
+* current_day
+* current_month
+  
 ### create_webdriver
 This function does two main jobs:
 * Acquiring the version of Chrome currently installed on the host machine
