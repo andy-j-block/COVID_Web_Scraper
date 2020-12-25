@@ -1,11 +1,13 @@
 # COVID Web Scraper
 <div align="justify">   
 
+
 ### Contents
 1. [Project Intent](#intent)
 2. [Data Sources](#data_sources)
-3. [Features](#features)
+3. [Setup](#setup)
 4. [Helper Function Explanations](#helper_fcns)
+
 
 ## Project Intent  <a name="intent"></a>
 This web scraping tool collects COVID data from two sources (John Hopkins Github and the COVID Tracking Project), reformats the datetime information, determines what data is new, and appends it into the master dataset.
@@ -14,13 +16,39 @@ This web scraper uses two methods for data collection: using the Selenium module
 
 This tool was built while at Ford Motor Company for my section's technical specialist Reid.  He was keeping the team up to date on the latest COVID numbers locally and regionally through several Tableau visualizations.  Unfortunately though, the process he was using of manually collecting the data and formatting it properly was consuming a fair amount of his time, especially given that this preprocessing was a once- or twice-weekly process.  Thus, I decided to lend him a hand on this by automating the process, giving me an opportunity to practice my data scraping skills.
 
+
 ## Data Sources  <a name="data_sources"></a>
 * COVID Tracking Project at The Atlantic - https://covidtracking.com/data/api
 * Johns Hopkins COVID-19 Data Repository - https://github.com/CSSEGISandData/COVID-19
 
-## Features  <a name="features"></a>
-* Directory Check
-  * Ensures the user has all the necessary helper files required to run the script and alerts the user through assert statements if a given file is missing from the base directory
+
+## Setup and Running  <a name="setup"></a>
+
+This Git repo can either be downloaded as a zip or cloned onto your machine.  There is an environment YAML file in the root directory that can be used to clone the conda environment used to build this program.
+
+The user need only run the get_COVID_data.py file in order to run the program, everything else is taken care of by the helper functions.  The get_COVID_data.py file performs the following tasks in order:
+
+### *Initialization*
+* gets the directories commonly used in the program and stores their locations as variables
+* gets the Chrome and Git bash executables for use later and stores their locations as variables
+* gets the current day and month and stores those as variables for later use
+
+### *COVID Tracking Project Data*
+* creates an instance of the ChromeDriver webdriver and alerts the user if there is a Chrome/ChromeDriver version mismatch
+* navigates to the COVID Tracking Project's web API and downloads the daily case data
+* saves the most recent data into the root directory and moves old data to the CTP_data sub-folder
+
+### *Johns Hopkins Data*
+* runs a Git pull on the data stored in the JH_data sub-folder using a subprocess and context manager
+* scans the root directory for an existing instance of a JH_master CSV file
+    * if none found, a new JH_master CSV file is created and populated with all the existing data up to the date of the most recent Git pull
+    * if JH_master found, read in this data as a pandas dataframe and continue
+* sets the 'Last_Update' column as a datetime and determines the date of the last Git pull
+* takes all of the new data since the last Git pull file by file and adds their contents to the JH_master CSV
+* saves the updated JH_master CSV file to the root directory
+
+Please see the following section for a more detailed explanation of all of the helper functions. 
+
 
 ## Helper Function Explanations  <a name="helper_fcns"></a>
 
@@ -90,7 +118,7 @@ Selenium is powering the driver functionality to navigate within the browser.  A
 
 One snag discovered during robustness testing was that sometimes the browser would timeout after requesting data from the API and the data would not be successfully downloaded.  Thus, I implemented my own timer to restart the process if the browser timeout issue occurred.
 
-Since these files contain daily data, the last part of this function will scan the contents of the root directory for an existing daily file and move it to the CTP_data sub-folder if it exists.  It's only at this point that the just-downloaded daily file is renamed to include the current day's dateparts and moved to the root directory.
+Since these files contain daily data, the last part of this function will scan the contents of the root directory for an existing daily file and move it to the CTP_data sub-folder if it exists.  It's only at this point that the just-downloaded daily file is renamed to include the `current_day` and `current_month` (from *get_todays_date* function) and moved to the root directory.
 
 </p>
 </details>

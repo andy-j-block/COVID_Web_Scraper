@@ -28,8 +28,11 @@ def update_JH_master(JH_master, JH_data_dir):
     def get_date_last_pull(JH_master):
         
         last_pull = JH_master['Last_Update'].iloc[-1]
+        
         last_pull = last_pull - pd.Timedelta('1 day')
+        
         last_pull = last_pull.dt.strftime('%m-%d-%Y')
+        
         last_pull = str(last_pull) + '.csv'
         
         return last_pull
