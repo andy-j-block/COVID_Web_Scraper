@@ -63,6 +63,8 @@ if __name__== '__main__':
     ##########
     
     driver, escape = create_webdriver(chrome_exe, helper_files_dir, downloads_dir)
+
+########### FIX ESCAPE FUNCTIONALITY
     
     if escape is True:
         error = print('The correct ChromeDriver version was not downloaded and the program cannot continue.')

@@ -38,8 +38,9 @@ This tool was built while at Ford Motor Company for my section's technical speci
 </p>
 </details>
 
+<details><summary><strong><em>get_dirs</em></strong></summary>
+<p>
 
-### *get_dirs*
 This function returns the locations of five directories commonly used throughout the program.  The subsequent helper files require many of these directories as inputs. The five directory outputs are as follows:
 
 * `root_dir` - the root directory on the host machine
@@ -50,13 +51,21 @@ This function returns the locations of five directories commonly used throughout
 
 The `downloads_dir` directory is the only directory located outside of the webscraper's repository.  Thus, it has been defaulted to the Downloads folder on Windows.  If this folder cannot be found (i.e., user running a different OS), the function will prompt the user to indentify the location of the host machine's Downloads folder.
 
-### *get_executables*
+</p>
+</details>
+
+<details><summary><strong><em>get_executables</em></strong></summary>
+<p>
+
 This function allows for easier usage of this webscraper across operating systems by identifying the locations of the Chrome browser and Git bash executables.  It returns the following two variables:
 
 * `chrome_exe`
 * `git_bash_exe`
 
 Again, my personal computer runs Windows and thus I've set the locations of these executables to their default locations on Windows.  However, if this program is run on a non-Windows machine, a warning box will open indicating that the executables cannot be found and a file dialog box is subsequently opened in which the user can identify their locations.
+
+</p>
+</details>
 
 ### *get_todays_date*
 This function simply returns the day and month at the time of running the program.  They are stored as the following variables:
@@ -72,7 +81,7 @@ This function performs two actions:
 * Aquires the version of Chrome currently installed on the host machine
 * Creates an instance of the webdriver for use in get_CTP_data function
 
-Acquiring the Chrome version is accomplished via the win32api module, pulling the requisite information from the Chrome executable's file properties.  This check obviously cannot run on non-Windows machine so the check is effectively foregone if so.
+Acquiring the Chrome version is accomplished via the win32api module, pulling the requisite information from the Chrome executable's file properties.  If a Chrome/ChromeDriver version mismatch is detected in the next step, the user will be displayed the current Chrome browser version and requested to download the associated ChromeDriver version.  This check obviously cannot run on non-Windows machine so it is effectively bypassed if this is the case.
 
 Creating an instance of the webdriver will confirm whether the correct version of ChromeDriver is available on the machine.  If not, the user will be prompted to download the correct ChromeDriver zip file.  The zip file contents are then extracted and moved to the *helper_files* directory.  The test is then run again and either passes if the user downloaded the correct ChromeDriver version or aborts after three failed attempts.  This breaks the entire program and a printed cancellation message is displayed.
 

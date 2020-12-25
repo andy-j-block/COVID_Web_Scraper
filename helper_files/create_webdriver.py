@@ -52,47 +52,53 @@ def create_webdriver(chrome_exe, helper_files_dir, downloads_dir):
     # - if no, tell user to download new version, navigate to zip file,
     #   delete existing chromedriver, extract new chromedriver from zip, 
     #   copy new chromedriver to helper files dir, create driver
+ 
     
+############### FIX ESCAPE
+
     _ = 0
+    escape = False
     
-    def test_chromedriver(chrome_ver, windows_TF, helper_files_dir, downloads_dir, _):
+    def test_chromedriver(chrome_ver, windows_TF, helper_files_dir, downloads_dir, escape, _):
       
-        try:
-            driver = webdriver.Chrome(helper_files_dir+'/chromedriver.exe')
-            escape = False
-            return driver, escape
-        
-        except:
-
-    ########## driver.quit()??
-    
-            tk.Tk().withdraw()
+        while escape is False:
             
-            if windows_TF is True:
-                error_message = 'Your installed Chrome version is v' +chrome_ver+'. Please download the corresponding ChromeDriver version here: https://chromedriver.chromium.org/downloads'
-            
-            else:
-                error_message = 'Please check your Chrome version by opening up your browser settings and selecting the "About Chrome" tab.  The corresponding ChromeDriver version can be found here: https://chromedriver.chromium.org/downloads'
-            
-            messagebox.showerror('Chrome/ChromeDriver version mismatch',
-                                 error_message)
-            
-            downloads_files = os.listdir(downloads_dir)
-            chromedriver_zip = [x for x in downloads_files if 'chromedriver' in x][0]
-            
-            with ZipFile(chromedriver_zip, 'r') as zip_file:
-                os.remove(helper_files_dir+'chromedriver.exe')
-                zip_file.extract('chromedriver.exe', helper_files_dir) 
-
-            _ += 1
-            
-            if _ < 4:             
+            try:
+                driver = webdriver.Chrome(helper_files_dir+'/chromedriver.exe')
                 escape = False
-            else:
-                escape = True
                 return driver, escape
-   
-            test_chromedriver(chrome_ver, windows_TF, helper_files_dir, downloads_dir, _)
+            
+            except:
+    
+        ########## driver.quit()??
+        
+                tk.Tk().withdraw()
+                
+                if windows_TF is True:
+                    error_message = 'Your installed Chrome version is v' +chrome_ver+'. Please download the corresponding ChromeDriver version here: https://chromedriver.chromium.org/downloads'
+                
+                else:
+                    error_message = 'Please check your Chrome version by opening up your browser settings and selecting the "About Chrome" tab.  The corresponding ChromeDriver version can be found here: https://chromedriver.chromium.org/downloads'
+                
+                messagebox.showerror('Chrome/ChromeDriver version mismatch',
+                                     error_message)
+                
+                downloads_files = os.listdir(downloads_dir)
+                chromedriver_zip = [x for x in downloads_files if 'chromedriver' in x][0]
+                
+                with ZipFile(chromedriver_zip, 'r') as zip_file:
+                    os.remove(helper_files_dir+'chromedriver.exe')
+                    zip_file.extract('chromedriver.exe', helper_files_dir) 
+    
+                _ += 1
+                
+                if _ < 4:             
+                    escape = False
+                else:
+                    escape = True
+                    return driver, escape
+       
+                test_chromedriver(chrome_ver, windows_TF, helper_files_dir, downloads_dir, _)
      
     ################
     
