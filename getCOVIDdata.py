@@ -62,8 +62,12 @@ if __name__== '__main__':
     
     ##########
     
-    driver = create_webdriver(chrome_exe, helper_files_dir, downloads_dir)
+    driver, escape = create_webdriver(chrome_exe, helper_files_dir, downloads_dir)
     
+    if escape is True:
+        error = print('The correct ChromeDriver version was not downloaded and the program cannot continue.')
+        return error
+        
     get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
     
     ##########
