@@ -2,7 +2,7 @@
 <div align="justify">   
 
 
-### Contents
+### Table of Contents
 1. [Project Intent](#intent)
 2. [Data Sources](#data_sources)
 3. [Setup](#setup)
@@ -24,28 +24,28 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 ## Setup and Running  <a name="setup"></a>
 
-This Git repo can either be downloaded as a zip or cloned onto your machine.  There is an environment YAML file in the root directory that can be used to clone the conda environment used to build this program.
+This Git repo can either be downloaded as a zip or cloned onto your machine.  There is an `environment.yml` file in the root directory that can be used to clone the conda environment used to build this program.
 
-The user need only run the get_COVID_data.py file in order to run the program, everything else is taken care of by the helper functions.  The get_COVID_data.py file performs the following tasks in order:
+The user need only run the `get_COVID_data.py` file in order to run the program, everything else is taken care of by the helper functions.  It performs the following tasks in order:
 
-### *Initialization*
+#### *Initialization*
 * gets the directories commonly used in the program and stores their locations as variables
 * gets the Chrome and Git bash executables for use later and stores their locations as variables
 * gets the current day and month and stores those as variables for later use
 
-### *COVID Tracking Project Data*
+#### *COVID Tracking Project Data*
 * creates an instance of the ChromeDriver webdriver and alerts the user if there is a Chrome/ChromeDriver version mismatch
 * navigates to the COVID Tracking Project's web API and downloads the daily case data
-* saves the most recent data into the root directory and moves old data to the CTP_data sub-folder
+* saves the most recent data into the root directory and moves old data to the `CTP_data` sub-folder
 
-### *Johns Hopkins Data*
-* runs a Git pull on the data stored in the JH_data sub-folder using a subprocess and context manager
-* scans the root directory for an existing instance of a JH_master CSV file
-    * if none found, a new JH_master CSV file is created and populated with all the existing data up to the date of the most recent Git pull
-    * if JH_master found, read in this data as a pandas dataframe and continue
-* sets the 'Last_Update' column as a datetime and determines the date of the last Git pull
-* takes all of the new data since the last Git pull file by file and adds their contents to the JH_master CSV
-* saves the updated JH_master CSV file to the root directory
+#### *Johns Hopkins Data*
+* runs a Git pull on the data stored in the `JH_data` sub-folder using a subprocess and context manager
+* scans the root directory for an existing instance of `JH_master.csv` file
+    * if none found, a new `JH_master.csv` file is created and populated with all the existing data up to the date of the most recent Git pull
+    * if `JH_master.csv` found, read in this data as a pandas dataframe and continue
+* sets the `'Last_Update'` column as a datetime and determines the date of the last Git pull
+* takes all of the new data since the last Git pull file by file and adds their contents to the `JH_master.csv`
+* saves the updated `JH_master.csv` file to the root directory
 
 Please see the following section for a more detailed explanation of all of the helper functions. 
 
@@ -81,7 +81,7 @@ Again, my personal computer runs Windows and thus I've set the locations of thes
 </p>
 </details>
 
-<details><summary><strong><em>get_executables</em></strong></summary>
+<details><summary><strong><em>get_todays_date</em></strong></summary>
 <p>
 
 This function simply returns the day and month at the time of running the program.  They are stored as the following variables:
@@ -142,7 +142,12 @@ This function creates a new JH_master CSV file if one does not already exist in 
 <details><summary><strong><em>update_JH_master</em></strong></summary>
 <p>
 
+This function performs three separate tasks:
 
+* Sets the `'Last_Update'` column in the `JH_master` dataframe to a datetime data type and drops the time portion
+* Determines the date of the most recent Git pull by shifting the last date entry back by 1 day (i.e. daily files labeled 12-08-2020 contains data dated as 12-09-2020)
+* Determines the new data that need to be appended to `JH_master` and loops thru these files, concatenating them to `JH_master`
+* Saves the `JH_master` dataframe to the root directory
 
 </p>
 </details>

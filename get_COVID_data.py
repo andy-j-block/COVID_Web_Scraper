@@ -86,6 +86,6 @@ if __name__== '__main__':
     else:
         JH_master = pd.read_csv(existing_JH_master[0])
     
-    update_JH_master(JH_master, JH_data_dir)
+    update_JH_master(JH_master, JH_data_dir, root_dir)
     
     ##########

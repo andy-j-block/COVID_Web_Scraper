@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 
-def update_JH_master(JH_master, JH_data_dir):
+def update_JH_master(JH_master, JH_data_dir, root_dir):
     
     ####################
     
@@ -45,7 +45,7 @@ def update_JH_master(JH_master, JH_data_dir):
     
     #####################
     
-    def add_new_data(JH_master, last_pull, JH_data_dir):
+    def add_new_data(JH_master, last_pull, JH_data_dir, root_dir):
         
         # identify csv's to add to master
         JH_files = os.listdir()[1:-1]
@@ -64,8 +64,8 @@ def update_JH_master(JH_master, JH_data_dir):
         
             JH_master = pd.concat([JH_master, new_data], ignore_index=True)
         
-        pd.to_csv(JH_data_dir + '/' + JH_master)
+        pd.to_csv(root_dir + '/' + JH_master)
 
     #####################
     
-    add_new_data(JH_master, last_pull, JH_data_dir)
+    add_new_data(JH_master, last_pull, JH_data_dir, root_dir)
