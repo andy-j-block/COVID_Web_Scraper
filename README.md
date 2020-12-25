@@ -24,20 +24,6 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 ## Helper Function Explanations  <a name="helper_fcns"></a>
 
-<details><summary><strong>See Functions</strong></summary>
-<p>
-
-- *[get_dirs](#get_dirs)*
-- *[get_todays_date](#get_todays_date)*
-- *[create_webdriver](#create_webdriver)*
-- *[get_CTP_data](#get_CTP_data)*
-- *[get_JH_data](#get_JH_data)*
-- *[create_JH_master](#create_JH_master)*
-- *[update_JH_master](#update_JH_master)*
-
-</p>
-</details>
-
 <details><summary><strong><em>get_dirs</em></strong></summary>
 <p>
 
@@ -46,8 +32,8 @@ This function returns the locations of five directories commonly used throughout
 * `root_dir` - the root directory on the host machine
 * `helper_files_dir` - the sub-directory containing all the helper files and modules
 * `downloads_dir` - the downloads folder of the host machine
-* `CTP_data_dir` - the directory where historical daily CTP reports are stored
-* `JH_data_dir` - the directory where the JH github repo is stored
+* `CTP_data_dir` - the directory where historical daily CTP reports will be moved to
+* `JH_data_dir` - the sub-directory within the JH github repo where the daily reports are stored
 
 The `downloads_dir` directory is the only directory located outside of the webscraper's repository.  Thus, it has been defaulted to the Downloads folder on Windows.  If this folder cannot be found (i.e., user running a different OS), the function will prompt the user to indentify the location of the host machine's Downloads folder.
 
@@ -67,15 +53,22 @@ Again, my personal computer runs Windows and thus I've set the locations of thes
 </p>
 </details>
 
-### *get_todays_date*
+<details><summary><strong><em>get_executables</em></strong></summary>
+<p>
+
 This function simply returns the day and month at the time of running the program.  They are stored as the following variables:
 
 * `current_day`
 * `current_month`
 
 These variables are used in the get_CTP_data function for file labeling purposes.
-  
-### *create_webdriver*
+
+</p>
+</details>
+
+<details><summary><strong><em>create_webdriver</em></strong></summary>
+<p>
+
 This function performs two actions:
 
 * Aquires the version of Chrome currently installed on the host machine
@@ -85,17 +78,46 @@ Acquiring the Chrome version is accomplished via the win32api module, pulling th
 
 Creating an instance of the webdriver will confirm whether the correct version of ChromeDriver is available on the machine.  If not, the user will be prompted to download the correct ChromeDriver zip file.  The zip file contents are then extracted and moved to the *helper_files* directory.  The test is then run again and either passes if the user downloaded the correct ChromeDriver version or aborts after three failed attempts.  This breaks the entire program and a printed cancellation message is displayed.
 
-### *get_CTP_data*
+</p>
+</details>
+
+<details><summary><strong><em>get_CTP_data</em></strong></summary>
+<p>
+
 This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving it to where it needs to be, etc.
 
-### *get_JH_data*
-This function performs a git pull on the JH repo stored in the JH_data folder.  It uses the subprocess module to open a git bash using the executable stored in `git_bash_exe`.
+Selenium is powering the driver functionality to navigate within the browser.  After accessing the COVID Tracking Project's website, the driver clicks its way to the link where the target data is stored.
 
-### *create_JH_master*
+One snag discovered during robustness testing was that sometimes the browser would timeout after requesting data from the API and the data would not be successfully downloaded.  Thus, I implemented my own timer to restart the process if the browser timeout issue occurred.
+
+Since these files contain daily data, the last part of this function will scan the contents of the root directory for an existing daily file and move it to the CTP_data sub-folder if it exists.  It's only at this point that the just-downloaded daily file is renamed to include the current day's dateparts and moved to the root directory.
+
+</p>
+</details>
+
+<details><summary><strong><em>get_JH_data</em></strong></summary>
+<p>
+
+This function performs a git pull on the JH repo stored in the JH_data folder.  It uses the subprocess module to open a git bash using the executable stored in `git_bash_exe`.  It also employs a context manager to take care of opening and closing the subprocess.
+
+</p>
+</details>
+
+<details><summary><strong><em>create_JH_master</em></strong></summary>
+<p>
+
 This function creates a new JH_master CSV file if one does not already exist in the main root folder.  This will take all of the 
 
-### *update_JH_master*
+</p>
+</details>
 
+<details><summary><strong><em>update_JH_master</em></strong></summary>
+<p>
+
+
+
+</p>
+</details>
 
 
 

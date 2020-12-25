@@ -60,11 +60,9 @@ def update_JH_master(JH_master, JH_data_dir):
             new_data['Last_Update'] = new_data['Last_Update'].dt.date
         
             JH_master = pd.concat([JH_master, new_data], ignore_index=True)
-
-        return JH_master
+        
+        pd.to_csv(JH_data_dir + '/' + JH_master)
 
     #####################
     
-    JH_master = add_new_data(JH_master, last_pull, JH_data_dir)
-
-    return JH_master
+    add_new_data(JH_master, last_pull, JH_data_dir)
