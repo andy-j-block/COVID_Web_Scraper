@@ -11,7 +11,7 @@
 import os
 import pandas as pd
 from helper_files.get_dirs import get_dirs
-from helper_files.get_get_bash_exe import get_git_bash_exe
+from helper_files.get_git_bash_exe import get_git_bash_exe
 from helper_files.get_todays_date import get_todays_date
 from helper_files.get_CTP_data import get_CTP_data
 from helper_files.get_JH_data import get_JH_data

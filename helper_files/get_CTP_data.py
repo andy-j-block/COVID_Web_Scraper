@@ -1,6 +1,5 @@
 import os
 import os.path
-import time
 import shutil
 import requests
 
@@ -36,6 +35,8 @@ def get_CTP_data(root_dir, CTP_data_dir, current_month, current_day):
     while not os.path.exists(new_daily_file):
         try:
             r = requests.get('https://api.covidtracking.com/v1/states/daily.csv', timeout=5)
+        except:
+            continue
         
         with open(new_daily_file,'wb') as f:
             f.write(r.content)

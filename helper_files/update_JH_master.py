@@ -9,8 +9,8 @@ def update_JH_master(JH_master, JH_data_dir, root_dir):
     
     def set_datetime(JH_master):
         
-        JH_master['Last_Update'] = pd.to_datetime(JH_master['Last_Update'], 
-                                                  format='%Y-%m-%d %H:%M:&S')
+        JH_master['Last_Update'] = pd.to_datetime(JH_master['Last_Update'])#, 
+                                                  #format='%Y-%m-%d %H:%M:%S')
         JH_master['Last_Update'] = JH_master['Last_Update'].dt.date
 
         JH_master = JH_master.sort_values('Last_Update', ascending = True)
@@ -57,8 +57,8 @@ def update_JH_master(JH_master, JH_data_dir, root_dir):
             
             new_data = pd.read_csv(i)
             
-            new_data['Last_Update'] = pd.to_datetime(new_data['Last_Update'],
-                                                   format='%Y-%m-%d %H:%M:&S')
+            new_data['Last_Update'] = pd.to_datetime(new_data['Last_Update'])#,
+                                                   #format='%Y-%m-%d %H:%M:%S')
             
             new_data['Last_Update'] = new_data['Last_Update'].dt.date
         
