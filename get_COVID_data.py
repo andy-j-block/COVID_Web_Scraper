@@ -43,7 +43,6 @@ import pandas as pd
 from helper_files.get_dirs import get_dirs
 from helper_files.get_executables import get_executables
 from helper_files.get_todays_date import get_todays_date
-from helper_files.create_webdriver import create_webdriver
 from helper_files.get_CTP_data import get_CTP_data
 from helper_files.get_JH_data import get_JH_data
 from helper_files.create_JH_master import create_JH_master
@@ -55,22 +54,14 @@ if __name__== '__main__':
     
     root_dir, helper_files_dir, downloads_dir, CTP_data_dir, JH_data_dir = get_dirs()
     
-    chrome_exe, git_bash_exe = get_executables()
+    git_bash_exe = get_executables()
     
     current_day, current_month = get_todays_date()
     
     
     ##########
-    
-    driver, escape = create_webdriver(chrome_exe, helper_files_dir, downloads_dir)
-
-########### FIX ESCAPE FUNCTIONALITY
-    
-    if escape is True:
-        error = print('The correct ChromeDriver version was not downloaded and the program cannot continue.')
-        return error
         
-    get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
+    get_CTP_data(root_dir, downloads_dir, CTP_data_dir, current_month, current_day)
     
     ##########
     

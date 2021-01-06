@@ -5,7 +5,7 @@
 ### Table of Contents
 1. [Project Intent](#intent)
 2. [Data Sources](#data_sources)
-3. [Setup](#setup)
+3. [Setup and Running](#setup)
 4. [Helper Function Explanations](#helper_fcns)
 
 
@@ -102,9 +102,9 @@ This function performs two actions:
 * Aquires the version of Chrome currently installed on the host machine
 * Creates an instance of the webdriver for use in get_CTP_data function
 
-Acquiring the Chrome version is accomplished via the win32api module, pulling the requisite information from the Chrome executable's file properties.  If a Chrome/ChromeDriver version mismatch is detected in the next step, the user will be displayed the current Chrome browser version and requested to download the associated ChromeDriver version.  This check obviously cannot run on non-Windows machine so it is effectively bypassed if this is the case.
+Acquiring the Chrome version is accomplished via the win32api module, pulling the requisite information from the Chrome executable's file properties.  If a Chrome/ChromeDriver version mismatch is detected in the next step, the user will be displayed the current Chrome browser version and requested to download the associated ChromeDriver version.  This check obviously cannot run on non-Windows machines so it is effectively bypassed if this is the case.
 
-Creating an instance of the webdriver will confirm whether the correct version of ChromeDriver is available on the machine.  If not, the user will be prompted to download the correct ChromeDriver zip file.  The zip file contents are then extracted and moved to the *helper_files* directory.  The test is then run again and either passes if the user downloaded the correct ChromeDriver version or aborts after three failed attempts.  This breaks the entire program and a printed cancellation message is displayed.
+Creating an instance of the webdriver will confirm whether the correct version of ChromeDriver is available on the machine.  If not, the user will be prompted to download the correct ChromeDriver zip file.  The zip file contents are then extracted and moved to the `helper_files` directory.  The test is then run again and either passes if the user downloaded the correct ChromeDriver version or aborts after three failed attempts.  This breaks the entire program and a printed cancellation message is displayed.
 
 </p>
 </details>
@@ -112,13 +112,13 @@ Creating an instance of the webdriver will confirm whether the correct version o
 <details><summary><strong><em>get_CTP_data</em></strong></summary>
 <p>
 
-This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving it to where it needs to be, etc.
+This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving the new data to where it needs to be.
 
 Selenium is powering the driver functionality to navigate within the browser.  After accessing the COVID Tracking Project's website, the driver clicks its way to the link where the target data is stored.
 
 One snag discovered during robustness testing was that sometimes the browser would timeout after requesting data from the API and the data would not be successfully downloaded.  Thus, I implemented my own timer to restart the process if the browser timeout issue occurred.
 
-Since these files contain daily data, the last part of this function will scan the contents of the root directory for an existing daily file and move it to the CTP_data sub-folder if it exists.  It's only at this point that the just-downloaded daily file is renamed to include the `current_day` and `current_month` (from *get_todays_date* function) and moved to the root directory.
+Since these files contain daily data, the last part of this function will scan the contents of the root directory for an existing daily file and move it to the CTP_data sub-folder if it exists.  It's only at this point that the newly-downloaded daily file is renamed to include the `current_day` and `current_month` (from `get_todays_date` function) and moved to the root directory.
 
 </p>
 </details>
@@ -126,7 +126,7 @@ Since these files contain daily data, the last part of this function will scan t
 <details><summary><strong><em>get_JH_data</em></strong></summary>
 <p>
 
-This function performs a git pull on the JH repo stored in the JH_data folder.  It uses the subprocess module to open a git bash using the executable stored in `git_bash_exe`.  It also employs a context manager to take care of opening and closing the subprocess.
+This function performs a Git pull on the JH repo stored in the `JH_data` folder.  It uses the `subprocess` module to open a Git bash using the executable found in the `git_bash_exe` variable.  It also employs a context manager to take care of opening and closing the subprocess.
 
 </p>
 </details>
@@ -134,7 +134,7 @@ This function performs a git pull on the JH repo stored in the JH_data folder.  
 <details><summary><strong><em>create_JH_master</em></strong></summary>
 <p>
 
-This function creates a new JH_master CSV file if one does not already exist in the main root folder.  This will take all of the 
+This function creates a new `JH_master.csv` file if one does not already exist in the main root folder.  It loops thru all of the existing files in the `JH_data`
 
 </p>
 </details>

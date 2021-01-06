@@ -18,10 +18,11 @@ def get_CTP_data(driver, root_dir, downloads_dir, CTP_data_dir, current_month, c
     #
     
     def get_latest_daily(driver, downloads_dir):
-    
+        
         timer=0
         
-        # remove any daily files if they exist
+        # remove any daily files from the downloads folder if they exist
+        
         try:
             os.remove(downloads_dir+'/daily.csv')
         except:
