@@ -42,7 +42,7 @@ if __name__== '__main__':
     existing_JH_master = [x for x in root_files if 'JH_master' in x]
     
     if len(existing_JH_master) != 1:
-        JH_master = create_JH_master(JH_data_dir)
+        JH_master = create_JH_master(JH_data_dir, root_dir)
     else:
         JH_master = pd.read_csv(existing_JH_master[0])
     
