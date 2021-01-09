@@ -11,7 +11,6 @@
 import os
 import pandas as pd
 from helper_files.get_dirs import get_dirs
-from helper_files.get_git_bash_exe import get_git_bash_exe
 from helper_files.get_todays_date import get_todays_date
 from helper_files.get_CTP_data import get_CTP_data
 from helper_files.get_JH_data import get_JH_data
@@ -23,9 +22,7 @@ from helper_files.update_JH_master import update_JH_master
 if __name__== '__main__':
     
     root_dir, helper_files_dir, CTP_data_dir, JH_data_dir = get_dirs()
-    
-    git_bash_exe = get_git_bash_exe()
-    
+        
     current_day, current_month = get_todays_date()
     
     ##########
@@ -34,7 +31,7 @@ if __name__== '__main__':
     
     ##########
     
-    get_JH_data(git_bash_exe, helper_files_dir, JH_data_dir)
+    get_JH_data(JH_data_dir)
     
     ##########
     
