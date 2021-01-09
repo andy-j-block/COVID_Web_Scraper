@@ -4,7 +4,16 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 
-def get_git_bash_exe():        
+def get_git_bash_exe():
+    
+    ####################
+    #
+    # This function takes the git bash executable and stores its location as a 
+    # variable (git_bash_exe).  It first tries to use the default windows location
+    # for the git bash executable and if it does not exist there, a filedialog
+    # box is opened for the user to select the location manually. 
+    #
+    ####################
     
     windows_git_loc = 'C:/Program Files/Git/git-bash.exe'
     

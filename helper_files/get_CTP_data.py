@@ -8,11 +8,14 @@ def get_CTP_data(root_dir, CTP_data_dir, current_month, current_day):
     
     #################
     #
-    # This function first changes the downloaded 'daily.csv' file to a dated
-    # filename, i.e. 'CTP_daily_12-20.csv' for a daily file downloaded on Dec 20.
-    # It then moves the previous daily file from the root directory to the 
-    # CTP_data directory. Finally, it moves the new, dated file from the 
-    # downloads directory to the root directory.
+    # This function uses the requests package to directly call the COVID Tracking
+    # Project's data API and pull its contents.  These contents are saved to the
+    # root dir as 'CTP_daily.csv' and an additional copy is saved to the CTP_data_dir
+    # subfolder with a dated title.  For instance, a file pulled on December 15th
+    # would be saved to the CTP_data_dir as 'CTP_daily-12-15.csv'.
+    #
+    # The call to the API can sometimes timeout so it's been bulletproofed with
+    # a while loop that will repeat until the new file exists in the root_dir.
     #
     #################
           
@@ -23,8 +26,7 @@ def get_CTP_data(root_dir, CTP_data_dir, current_month, current_day):
     
     while not os.path.exists(new_daily_file):
         try:
-            r = requests.get('https://api.covidtracking.com/v1/states/daily.csv',
-                             timeout=5)
+            r = requests.get('https://api.covidtracking.com/v1/states/daily.csv', timeout=5)
             
         except:
             continue

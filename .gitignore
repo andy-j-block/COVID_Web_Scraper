@@ -4,3 +4,6 @@ JH_data/archived_data/
 JH_data/who_covid_19_situation_reports
 JH_data/csse_covid_19_data/csse_covid_19_time_series
 JH_data/csse_covid_19_data/csse_covid_19_daily_reports_us
+
+CTP_daily.csv
+JH_master.csv

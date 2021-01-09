@@ -1,11 +1,15 @@
-############### TODO
-# write func description
-
 
 from datetime import date    
     
 
 def get_todays_date():
+    
+    ###################
+    #
+    # This function gets today's current day and month values for later use in
+    # the program.
+    #
+    ###################
     
     todays_date = str(date.today())
     
