@@ -10,7 +10,7 @@
 
 
 ## Project Intent  <a name="intent"></a>
-This web scraping tool collects COVID data from two sources (John Hopkins Github and the COVID Tracking Project), reformats the datetime information, determines what data is new, and appends it into the master dataset.
+This web scraping tool collects COVID data from two sources (Johns Hopkins Github and the COVID Tracking Project), reformats the datetime information, determines what data is new, and appends it into the master dataset.
 
 This web scraper uses two methods for data collection: using the Selenium module and associated Chromedriver to navigate to the COVID Tracking Project website and pull daily case data from their API, and launching a git shell to pull ____ from the Johns Hopkins COVID19 data repo.
 
@@ -63,7 +63,7 @@ This function returns the locations of five directories commonly used throughout
 * `CTP_data_dir` - the directory where historical daily CTP reports will be moved to
 * `JH_data_dir` - the sub-directory within the JH github repo where the daily reports are stored
 
-The `downloads_dir` directory is the only directory located outside of the webscraper's repository.  Thus, it has been defaulted to the Downloads folder on Windows.  If this folder cannot be found (i.e., user running a different OS), the function will prompt the user to indentify the location of the host machine's Downloads folder.
+The `downloads_dir` directory is the only directory located outside of the webscraper's repository.  Thus, it has been defaulted to the Downloads folder on Windows.  If this folder cannot be found (i.e., user running a different OS), the function will prompt the user to identify the location of the host machine's Downloads folder.
 
 </p>
 </details>
