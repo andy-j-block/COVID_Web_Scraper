@@ -21,19 +21,27 @@ from helper_files.update_JH_master import update_JH_master
 
 if __name__== '__main__':
     
+    # Initialization first
+    
     root_dir, helper_files_dir, CTP_data_dir, JH_data_dir = get_dirs()
         
     current_day, current_month = get_todays_date()
     
     ##########
-        
+    
+    # Get COVID Tracking Project data
+    
     get_CTP_data(root_dir, CTP_data_dir, current_month, current_day)
     
     ##########
     
+    # Get Johns Hopkins data
+    
     get_JH_data(JH_data_dir)
     
     ##########
+    
+    # Create JH_master.csv if one does not exist, otherwise simply update JH_master.csv
     
     root_files = os.listdir(root_dir)
     existing_JH_master = [x for x in root_files if 'JH_master' in x]

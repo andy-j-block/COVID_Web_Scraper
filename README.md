@@ -10,7 +10,7 @@
 
 
 ## Project Intent  <a name="intent"></a>
-This web scraping tool collects COVID data from two sources (John Hopkins Github and the COVID Tracking Project), reformats the datetime information, determines what data is new, and appends it into the master dataset.
+This web scraping tool collects COVID data from two sources (Johns Hopkins Github and the COVID Tracking Project), reformats the datetime information, determines what data is new, and appends it into the master dataset.
 
 This web scraper uses two methods for data collection: using the Selenium module and associated Chromedriver to navigate to the COVID Tracking Project website and pull daily case data from their API, and launching a git shell to pull ____ from the Johns Hopkins COVID19 data repo.
 
@@ -30,11 +30,9 @@ The user need only run the `get_COVID_data.py` file in order to run the program,
 
 #### *Initialization*
 * gets the directories commonly used in the program and stores their locations as variables
-* gets the Chrome and Git bash executables for use later and stores their locations as variables
 * gets the current day and month and stores those as variables for later use
 
 #### *COVID Tracking Project Data*
-* creates an instance of the ChromeDriver webdriver and alerts the user if there is a Chrome/ChromeDriver version mismatch
 * navigates to the COVID Tracking Project's web API and downloads the daily case data
 * saves the most recent data into the root directory and moves old data to the `CTP_data` sub-folder
 
@@ -55,28 +53,12 @@ Please see the following section for a more detailed explanation of all of the h
 <details><summary><strong><em>get_dirs</em></strong></summary>
 <p>
 
-This function returns the locations of five directories commonly used throughout the program.  The subsequent helper files require many of these directories as inputs. The five directory outputs are as follows:
+This function returns the locations of four directories commonly used throughout the program.  The subsequent helper files require many of these directories as inputs. The four directory outputs are as follows:
 
 * `root_dir` - the root directory on the host machine
 * `helper_files_dir` - the sub-directory containing all the helper files and modules
-* `downloads_dir` - the downloads folder of the host machine
 * `CTP_data_dir` - the directory where historical daily CTP reports will be moved to
 * `JH_data_dir` - the sub-directory within the JH github repo where the daily reports are stored
-
-The `downloads_dir` directory is the only directory located outside of the webscraper's repository.  Thus, it has been defaulted to the Downloads folder on Windows.  If this folder cannot be found (i.e., user running a different OS), the function will prompt the user to indentify the location of the host machine's Downloads folder.
-
-</p>
-</details>
-
-<details><summary><strong><em>get_executables</em></strong></summary>
-<p>
-
-This function allows for easier usage of this webscraper across operating systems by identifying the locations of the Chrome browser and Git bash executables.  It returns the following two variables:
-
-* `chrome_exe`
-* `git_bash_exe`
-
-Again, my personal computer runs Windows and thus I've set the locations of these executables to their default locations on Windows.  However, if this program is run on a non-Windows machine, a warning box will open indicating that the executables cannot be found and a file dialog box is subsequently opened in which the user can identify their locations.
 
 </p>
 </details>
@@ -84,33 +66,20 @@ Again, my personal computer runs Windows and thus I've set the locations of thes
 <details><summary><strong><em>get_todays_date</em></strong></summary>
 <p>
 
-This function simply returns the day and month at the time of running the program.  They are stored as the following variables:
+This function simply returns the day and month at the time of running the program using the `datetime` module.  They are stored as the following variables:
 
 * `current_day`
 * `current_month`
 
-These variables are used in the get_CTP_data function for file labeling purposes.
-
-</p>
-</details>
-
-<details><summary><strong><em>create_webdriver</em></strong></summary>
-<p>
-
-This function performs two actions:
-
-* Aquires the version of Chrome currently installed on the host machine
-* Creates an instance of the webdriver for use in get_CTP_data function
-
-Acquiring the Chrome version is accomplished via the win32api module, pulling the requisite information from the Chrome executable's file properties.  If a Chrome/ChromeDriver version mismatch is detected in the next step, the user will be displayed the current Chrome browser version and requested to download the associated ChromeDriver version.  This check obviously cannot run on non-Windows machines so it is effectively bypassed if this is the case.
-
-Creating an instance of the webdriver will confirm whether the correct version of ChromeDriver is available on the machine.  If not, the user will be prompted to download the correct ChromeDriver zip file.  The zip file contents are then extracted and moved to the `helper_files` directory.  The test is then run again and either passes if the user downloaded the correct ChromeDriver version or aborts after three failed attempts.  This breaks the entire program and a printed cancellation message is displayed.
+These variables are used in the `get_CTP_data` function for file labeling purposes.
 
 </p>
 </details>
 
 <details><summary><strong><em>get_CTP_data</em></strong></summary>
 <p>
+
+Fix
 
 This function does the hard yards of getting the COVID Tracking Project (CTP) data, formatting the filename, moving the new data to where it needs to be.
 
@@ -126,7 +95,7 @@ Since these files contain daily data, the last part of this function will scan t
 <details><summary><strong><em>get_JH_data</em></strong></summary>
 <p>
 
-This function performs a Git pull on the JH repo stored in the `JH_data` folder.  It uses the `subprocess` module to open a Git bash using the executable found in the `git_bash_exe` variable.  It also employs a context manager to take care of opening and closing the subprocess.
+This function performs a Git pull on the JH repo stored in the `JH_data` subfolder.  It uses the `GitPython` module by creating a Git class object, giving it the `JH_data_dir` as the target folder, and using the pull() method to perform the git pull.
 
 </p>
 </details>
@@ -134,7 +103,7 @@ This function performs a Git pull on the JH repo stored in the `JH_data` folder.
 <details><summary><strong><em>create_JH_master</em></strong></summary>
 <p>
 
-This function creates a new `JH_master.csv` file if one does not already exist in the main root folder.  It loops thru all of the existing files in the `JH_data`
+This function creates a new `JH_master.csv` file if one does not already exist in the `root_dir`.  It loops thru all of the existing files in the `JH_data`
 
 </p>
 </details>

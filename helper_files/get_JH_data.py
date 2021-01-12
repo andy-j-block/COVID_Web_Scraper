@@ -1,5 +1,5 @@
 
-import git
+from git import Git
 
 def get_JH_data(JH_data_dir):
     
@@ -10,5 +10,5 @@ def get_JH_data(JH_data_dir):
     #
     #####################
     
-    g = git.cmd.Git(JH_data_dir)
+    g = Git(JH_data_dir)
     g.pull()
