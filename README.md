@@ -18,13 +18,16 @@ This tool was built while at Ford Motor Company for my section's technical speci
 
 
 ## Data Sources  <a name="data_sources"></a>
+<p style="text-align:center;">
+   <img src="CTP_JH_logos.png">
+</p>
+
 * COVID Tracking Project at The Atlantic - https://covidtracking.com/data/api
 * Johns Hopkins COVID-19 Data Repository - https://github.com/CSSEGISandData/COVID-19
 
-
 ## Setup and Running  <a name="setup"></a>
 
-This Git repo can either be downloaded as a zip or cloned onto your machine.  There is an `environment.yml` file in the root directory that can be used to clone the conda environment used to build this program.
+This Git repo can either be downloaded as a zip or cloned onto your machine.  In order to populate the `JH_data` subfolder, please open a git bash from the main root folder and run `git submodule update --init`.  There is also an `environment.yml` file in the root directory that can be used to clone the conda environment with all the necessary packages to run this program.
 
 The user need only run the `get_COVID_data.py` file in order to run the program, everything else is taken care of by the helper functions.  It performs the following tasks in order:
 
